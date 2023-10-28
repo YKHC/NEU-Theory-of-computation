@@ -1,5 +1,8 @@
 # NEU-Theory-of-computation
 东北大学 计算理论 图灵机作业
+
+可以通过在in.txt、info.txt内增加，来拓展这个程序
+
 initializeData(): 从文件中读取数据，解析语法规则，初始化全局数组和变量。
 selectGrammar(): 要求用户选择一个语法，检查输入的有效性，设置grammernow为所选语法。
 readSentence(): 要求用户输入一个句子，将其处理成特定格式，初始化datadeal、position和statenow。
