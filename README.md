@@ -1,7 +1,9 @@
 # NEU-Theory-of-computation
 东北大学 计算理论 图灵机作业
 
-可以通过在in.txt、info.txt内增加，来拓展这个程序
+为了得到可视化，我又不会Qt（说出来自己都难绷），于是用python写了一个
+
+可以通过在in.txt内增加，来拓展这个程序
 
 initializeData(): 从文件中读取数据，解析语法规则，初始化全局数组和变量。
 selectGrammar(): 要求用户选择一个语法，检查输入的有效性，设置grammernow为所选语法。
