@@ -5,7 +5,7 @@
 #define MAX_INPUT_SIZE 128
 #define MAX_DATA_SIZE 20000
 
-char a[7][31][5];
+char a[100][100][100];
 int Numforsentence[7];
 char database[MAX_DATA_SIZE];
 char datadeal[MAX_DATA_SIZE];
@@ -15,11 +15,11 @@ char settext[MAX_DATA_SIZE];
 char statenow;
 int totGrammer;
 
-// ´ÓÎÄ¼şÖĞ¶ÁÈ¡Êı¾İµÄº¯Êı
+// ä»æ–‡ä»¶ä¸­è¯»å–æ•°æ®çš„å‡½æ•°
 void readFromFile(const char* fileName, char* destination, size_t maxSize) {
     FILE* file = fopen(fileName, "r");
     if (file == NULL) {
-        perror("´ò¿ªÎÄ¼ş³ö´í");
+        perror("æ‰“å¼€æ–‡ä»¶å‡ºé”™");
         exit(1);
     }
 
@@ -29,7 +29,7 @@ void readFromFile(const char* fileName, char* destination, size_t maxSize) {
     fclose(file);
 }
 
-// ³õÊ¼»¯Êı¾İµÄº¯Êı
+// åˆå§‹åŒ–æ•°æ®çš„å‡½æ•°
 void initializeData() {
     readFromFile("in.txt", database, MAX_DATA_SIZE);
 
@@ -58,46 +58,46 @@ void initializeData() {
     Numforsentence[totGrammer] = littlecheck;
 }
 
-// Ñ¡ÔñÓï·¨µÄº¯Êı
+// é€‰æ‹©è¯­æ³•çš„å‡½æ•°
 void selectGrammar() {
     char input[MAX_INPUT_SIZE];
-    printf("ÇëÑ¡ÔñÓï·¨£º\n");
+    printf("è¯·é€‰æ‹©è¯­æ³•ï¼š\n");
     printf("1. 0^n1^n\n");
-    printf("2. ¼õ·¨(¸ñÊ½Îª000100)\n");
-    printf("3.¶ÁÈ¡wcw£¬w¡Ê{0,1}µÄÕı±Õ°ü\n");
+    printf("2. å‡æ³•(æ ¼å¼ä¸º000100)\n");
+    printf("3.è¯»å–wcwï¼Œwâˆˆ{0,1}çš„æ­£é—­åŒ…\n");
     fgets(input, MAX_INPUT_SIZE, stdin);
 
     if (strlen(input) == 0 || input[0] == '\n') {
-        printf("ÊäÈëÎª¿Õ¡£ÇëÑ¡ÔñÒ»¸öÓï·¨¡£\n");
+        printf("è¾“å…¥ä¸ºç©ºã€‚è¯·é€‰æ‹©ä¸€ä¸ªè¯­æ³•ã€‚\n");
         exit(1);
     }
 
-    input[strlen(input) - 1] = '\0'; // È¥³ıÄ©Î²µÄ»»ĞĞ·û
+    input[strlen(input) - 1] = '\0'; // å»é™¤æœ«å°¾çš„æ¢è¡Œç¬¦
 
     if (strlen(input) != 1 || (input[0] < '1' || input[0] > '3')) {
-        printf("ÎŞĞ§µÄÊäÈë¡£ÇëÑ¡ÔñÓĞĞ§µÄÓï·¨±àºÅ£¨1¡¢2¡¢3£©¡£\n");
+        printf("æ— æ•ˆçš„è¾“å…¥ã€‚è¯·é€‰æ‹©æœ‰æ•ˆçš„è¯­æ³•ç¼–å·ï¼ˆ1ã€2ã€3ï¼‰ã€‚\n");
         exit(1);
     }
 
     grammernow = input[0] - '0';
-    printf("³É¹¦Ñ¡ÔñÁËÓï·¨ %d¡£\n", grammernow);
+    printf("æˆåŠŸé€‰æ‹©äº†è¯­æ³• %dã€‚\n", grammernow);
 }
 
-// ¶ÁÈ¡¾ä×ÓµÄº¯Êı
+// è¯»å–å¥å­çš„å‡½æ•°
 void readSentence() {
     char input[MAX_INPUT_SIZE];
-    printf("ÇëÊäÈëÒ»¸ö¾ä×Ó£º");
+    printf("è¯·è¾“å…¥ä¸€ä¸ªå¥å­ï¼š");
     fgets(input, MAX_INPUT_SIZE, stdin);
 
     if (strlen(input) == 0 || input[0] == '\n') {
-        printf("ÊäÈëÎª¿Õ¡£ÇëÌá¹©Ò»¸ö¾ä×Ó¡£\n");
+        printf("è¾“å…¥ä¸ºç©ºã€‚è¯·æä¾›ä¸€ä¸ªå¥å­ã€‚\n");
         exit(1);
     }
 
-    input[strlen(input) - 1] = '\0'; // È¥³ıÄ©Î²µÄ»»ĞĞ·û
+    input[strlen(input) - 1] = '\0'; // å»é™¤æœ«å°¾çš„æ¢è¡Œç¬¦
 
     if (strlen(input) == 0) {
-        printf("²»ºÏ·¨¡£\n");
+        printf("ä¸åˆæ³•ã€‚\n");
         exit(1);
     }
 
@@ -105,16 +105,16 @@ void readSentence() {
         datadeal[i + 1] = input[i];
     }
 
-    datadeal[strlen(input) + 1] = 'B';  // ÔÚÄ©Î²Ìí¼Ó'B'
-    datadeal[strlen(input) + 2] = '\0';  // ×Ö·û´®Ä©Î²Ìí¼Ónull
+    datadeal[strlen(input) + 1] = 'B';  // åœ¨æœ«å°¾æ·»åŠ 'B'
+    datadeal[strlen(input) + 2] = '\0';  // å­—ç¬¦ä¸²æœ«å°¾æ·»åŠ null
 
-    datadeal[0] = 'B'; // ½«µÚÒ»¸ö×Ö·ûÉèÖÃÎª'B'
+    datadeal[0] = 'B'; // å°†ç¬¬ä¸€ä¸ªå­—ç¬¦è®¾ç½®ä¸º'B'
 
     position = 1;
     statenow = '0';
 }
 
-// Ö´ĞĞÓï·¨¹æÔòµÄº¯Êı
+// æ‰§è¡Œè¯­æ³•è§„åˆ™çš„å‡½æ•°
 int executeRules() {
     while (statenow != '#') {
         int trigger = 0;
@@ -143,7 +143,7 @@ int executeRules() {
             }
         }
         if (!trigger) {
-            printf("²»ºÏ·¨¡£\n");
+            printf("ä¸åˆæ³•ã€‚\n");
             return 1;
         }
     }
@@ -172,9 +172,9 @@ int main() {
     int result = executeRules();
 
     if (result == 0) {
-        // Êä³ö settext
+        // è¾“å‡º settext
         printf("%s\n", settext);
-        printf("ÊäÈëºÏ·¨¡£\n");
+        printf("è¾“å…¥åˆæ³•ã€‚\n");
     }
 
     return result;
