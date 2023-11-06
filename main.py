@@ -14,6 +14,10 @@ state_now = '0'
 tot_grammar = 0
 set_text = ""
 
+root = tk.Tk()
+root.title("Turing machine")
+root.geometry("500x300")
+
 
 def read_from_file(filename):
     global database
@@ -68,41 +72,75 @@ def read_sentence():
     position = 1
     state_now = '0'
 
+def center_window(win, width=400, height=200):
+    screen_width = win.winfo_screenwidth()
+    screen_height = win.winfo_screenheight()
+    x = int((screen_width / 2) - (width / 2))
+    y = int((screen_height / 2) - (height / 2))
+    win.geometry(f"{width}x{height}+{x}+{y}")
 
-def execute_rules():
+def show_custom_messagebox(message):
+    message_window = tk.Toplevel(root)
+    message_window.title("Message")
+    message_window.geometry("400x200")
+    center_window(message_window)
+    message_label = tk.Label(message_window, text=message, wraplength=380, font=("Courier", 12))
+    message_label.pack(expand=True)
+
+    # 自动关闭窗口的功能
+    def close_messagebox():
+        message_window.destroy()
+
+    message_window.after(2000, close_messagebox)
+
+
+def execute_step():
     global data_deal, position, state_now, set_text, grammar_now
 
-    while state_now != '#':
-        trigger = 0
-        for i, rule in enumerate(data_rules[grammar_now]):
-            if rule[0] == state_now and rule[1] == data_deal[position]:
-                state_now = rule[2]
-                data_deal = data_deal[:position] + rule[3] + data_deal[position+1:]
+    if state_now == '#':
+        # 如果状态为'#'，则表示图灵机结束运行，不需要再次显示字符串
+        # set_text = data_deal + '\n' + (' ' * (position - 1)) + '*'
+        # show_custom_messagebox(set_text)
+        messagebox.showinfo("完成", "图灵机执行完成！")
+        return  # 结束函数执行
 
-                if rule[4] == 'R':
-                    position += 1
-                    if position == len(data_deal) - 1:
-                        data_deal += 'B'
-                elif rule[4] == 'L':
-                    position -= 1
-                    if position == len(data_deal) - 1:
-                        data_deal += 'B'
+    trigger = False
+    for rule in data_rules[grammar_now]:
+        if rule[0] == state_now and rule[1] == data_deal[position]:
+            # 更新状态和字符串
+            state_now = rule[2]
+            data_deal = data_deal[:position] + rule[3] + data_deal[position + 1:]
+            position += {'R': 1 , 'L': -1}.get(rule[4], 0)
 
-                trigger = 1
-                break
+            if position == len(data_deal):
+                data_deal += 'B'  # 如果到达字符串末尾，添加'B'
+            elif position < 0:
+                data_deal = 'B' + data_deal  # 如果到达字符串开头，添加'B'
+                position = 0
 
-        if not trigger:
-            messagebox.showerror("Error", "不合法的输入")
-            return
+            # 展示当前字符串和读写头的位置
+            set_text = data_deal + '\n' + (' ' * (position - 1)) + '*'
+            show_custom_messagebox(set_text)
 
-    set_text = data_deal + '\n' + (' ' * (position)) + '*'
-    messagebox.showinfo("Result", set_text)
+            trigger = True
+            break
 
+    if not trigger:
+        messagebox.showerror("错误", "不合法的输入")
+        return
+
+    root.after(1000, execute_step)  # 延迟1秒调用execute_step
+
+
+
+def execute_rules():
+    # 首先显示原始的符号串
+    initial_text = data_deal + '\n' + (' ' * (position - 1)) + '*'
+    show_custom_messagebox(initial_text)
+
+    root.after(2000, execute_step)  # 2秒后开始执行步骤
 
 def main():
-    root = tk.Tk()
-    root.title("Turing machine")
-    root.geometry("500x300")
     label = tk.Label(root, text="请按顺序点击每个按钮:")
     label.pack(pady=20)
 
@@ -118,8 +156,9 @@ def main():
     button4 = tk.Button(root, text="开始运行", command=execute_rules)
     button4.pack(pady=10)
 
-    root.mainloop()
 
-
+# 确保在这里调用root.mainloop()来启动Tkinter事件循环
 if __name__ == "__main__":
     main()
+    root.mainloop()
+
