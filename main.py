@@ -98,9 +98,6 @@ def execute_step():
     global data_deal, position, state_now, set_text, grammar_now
 
     if state_now == '#':
-        # 如果状态为'#'，则表示图灵机结束运行，不需要再次显示字符串
-        # set_text = data_deal + '\n' + (' ' * (position - 1)) + '*'
-        # show_custom_messagebox(set_text)
         messagebox.showinfo("完成", "图灵机执行完成！")
         return  # 结束函数执行
 
@@ -118,7 +115,6 @@ def execute_step():
                 data_deal = 'B' + data_deal  # 如果到达字符串开头，添加'B'
                 position = 0
 
-            # 展示当前字符串和读写头的位置
             set_text = data_deal + '\n' + (' ' * (position - 1)) + '*'
             show_custom_messagebox(set_text)
 
@@ -134,7 +130,6 @@ def execute_step():
 
 
 def execute_rules():
-    # 首先显示原始的符号串
     initial_text = data_deal + '\n' + (' ' * (position - 1)) + '*'
     show_custom_messagebox(initial_text)
 
@@ -157,7 +152,6 @@ def main():
     button4.pack(pady=10)
 
 
-# 确保在这里调用root.mainloop()来启动Tkinter事件循环
 if __name__ == "__main__":
     main()
     root.mainloop()
