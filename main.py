@@ -98,6 +98,7 @@ def execute_step():
     global data_deal, position, state_now, set_text, grammar_now
 
     if state_now == '#':
+        # 如果状态为'#'，则表示图灵机结束运行，不需要再次显示字符串
         messagebox.showinfo("完成", "图灵机执行完成！")
         return  # 结束函数执行
 
