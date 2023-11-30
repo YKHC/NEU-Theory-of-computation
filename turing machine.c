@@ -15,7 +15,6 @@ char settext[MAX_DATA_SIZE];
 char statenow;
 int totGrammer;
 
-// 从文件中读取数据的函数
 void readFromFile(const char* fileName, char* destination, size_t maxSize) {
     FILE* file = fopen(fileName, "r");
     if (file == NULL) {
@@ -29,7 +28,6 @@ void readFromFile(const char* fileName, char* destination, size_t maxSize) {
     fclose(file);
 }
 
-// 初始化数据的函数
 void initializeData() {
     readFromFile("in.txt", database, MAX_DATA_SIZE);
 
@@ -58,7 +56,6 @@ void initializeData() {
     Numforsentence[totGrammer] = littlecheck;
 }
 
-// 选择语法的函数
 void selectGrammar() {
     char input[MAX_INPUT_SIZE];
     printf("请选择语法：\n");
@@ -83,7 +80,6 @@ void selectGrammar() {
     printf("成功选择了语法 %d。\n", grammernow);
 }
 
-// 读取句子的函数
 void readSentence() {
     char input[MAX_INPUT_SIZE];
     printf("请输入一个句子：");
@@ -114,7 +110,6 @@ void readSentence() {
     statenow = '0';
 }
 
-// 执行语法规则的函数
 int executeRules() {
     while (statenow != '#') {
         int trigger = 0;
